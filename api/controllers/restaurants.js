@@ -6,9 +6,7 @@ exports.getRestaurants = () => {
 }
 
 exports.getRestaurant = () => {
-    return (req, res) => {
-        return res.send("get restaurant: " + req.params.restaurant)
-    }
+    return (req, res) => res.send("get restaurant: " + req.params.restaurant)
 }
 
 exports.updateRestaurant = () => {
