@@ -27,7 +27,22 @@ exports.getRestaurant = () => {
 }
 
 exports.updateRestaurant = () => {
-    return (req, res) => res.send("updating restaurant: " + req.params.id)
+    return (req, res) => {
+        const validation = schemaValidateRequest(req.body)
+        if (validation.errors.length > 0) {
+            return res.status(400).send('JSON schema validation failed with the following errors: ' + validation.errors)
+        }
+        RestaurantMongoSchema.findOneAndUpdate({_id: req.params.id}, req.body, (err, upd) => {
+            if (err) {
+                console.error(err.message)
+                res.status(500).send(err.message)
+            } else {
+                console.log(req.body.name + 'updated')
+                res.send(upd)
+            }
+
+        } )
+    }
 }
 
 exports.createRestaurant = () => {
