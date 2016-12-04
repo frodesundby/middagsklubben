@@ -4,19 +4,20 @@ module.exports = {
         schemaType: 'string'
     },
     address: {
-        mongoSchemaDefinition: {type: String, lowercase: true},
+        mongoSchemaDefinition: {type: String,},
         schemaType: 'string'
     },
     kitchen: {
-        mongoSchemaDefinition: {type: String, lowercase: true},
-        schemaType: 'string'
+        mongoSchemaDefinition: {type: Array, lowercase: true},
+        schemaType: 'array'
     },
     image: {
         mongoSchemaDefinition: {type: String, lowercase: true},
         schemaType: 'string'
     },
     created: {
-        mongoSchemaDefinition: {type: String, lowercase: true},
-        schemaType: 'string'
+        mongoSchemaDefinition: {type: Date, default: Date.now},
+        schemaType: 'date'
     },
 }
+

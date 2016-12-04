@@ -13,10 +13,6 @@ const createMongoSchemaDefinitionFrom = (def) =>{
 
 const mongoServerSchema = createMongoSchemaDefinitionFrom(restaurantDefinition)
 
-mongoServerSchema.set('toJSON', {
-  transform: function (doc, ret, options) {
-    delete ret._id
-  }
-})
+
 
 module.exports = mongoose.model('Restaurant', mongoServerSchema)

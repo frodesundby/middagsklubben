@@ -8,9 +8,9 @@ module.exports = (app) => {
 
     // Restaurants
     app.get(api_root +'/restaurants', restaurants.getRestaurants())
+    app.post(api_root + '/restaurants', restaurants.createRestaurant())
     app.get(api_root + '/restaurants/:restaurant', restaurants.getRestaurant())
     app.put(api_root + '/restaurants/:restaurant', restaurants.updateRestaurant())
-    app.post(api_root + '/restaurants/:restaurant', restaurants.createRestaurant())
     app.delete(api_root +'/restaurants/:restaurant', restaurants.deleteRestaurant())
 
     // Events
