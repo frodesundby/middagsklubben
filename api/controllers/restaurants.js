@@ -6,24 +6,19 @@ const RestaurantDefinition = require('../models/restaurantDefinition')
 exports.getRestaurants = () => {
 
     return (req, res) => {
-        console.log("got request")
         RestaurantMongoSchema.find(createMongoQueryFromRequest(req.query), (err, restaurants) => {
-            if (err) return next(err)
+            if (err) return res.status(400).send(err)
 
-            restaurants = JSON.parse(JSON.stringify(restaurants)) // doc -> json
-
-            res.header('Content-Type', 'application/json; charset=utf-8')
-            res.json(restaurants)
+            res.send(restaurants)
 
         })
     }
-    return (req, res) => res.send("get restaurant: " + req.params.restaurant)
 }
 
 exports.getRestaurant = () => {
     return (req, res) => {
-        RestaurantMongoSchema.findOne({_id: req.params.restaurant}, (err, restaurant) => {
-            if (err) return next(err)
+        RestaurantMongoSchema.findOne({_id: req.params.id}, (err, restaurant) => {
+            if (err) return res.status(400).send("Unable to find restaurant with id " + req.params.id)
             res.json(restaurant)
 
         })
@@ -32,7 +27,7 @@ exports.getRestaurant = () => {
 }
 
 exports.updateRestaurant = () => {
-    return (req, res) => res.send("updating restaurant: " + req.params.restaurant)
+    return (req, res) => res.send("updating restaurant: " + req.params.id)
 }
 
 exports.createRestaurant = () => {
@@ -41,20 +36,26 @@ exports.createRestaurant = () => {
         if (validation.errors.length > 0) {
             return res.status(400).send('JSON schema validation failed with the following errors: ' + validation.errors)
         }
-        RestaurantMongoSchema.collection.insert(req.body, (err, docs) => {
+        RestaurantMongoSchema.collection.insert(req.body, (err) => {
             if (err) {
                 console.error(err.message)
                 res.status(500).send(err.message)
             } else {
                 console.log(req.body.name + ' restaurant created')
-                res.status(201).send(req.body.name + " created")
+                res.status(201).send(req.body.name + " created successfully")
             }
         })
     }
 }
 
 exports.deleteRestaurant = () => {
-    return (req, res) => res.send("deleted restaurant: " + req.params.restaurant)
+    return (req, res) => {
+        RestaurantMongoSchema.findOneAndRemove({_id:req.params.id}, (err) => {
+            if (err) res.status(400).send(err.message)
+            res.status(204).send()
+
+        })
+    }
 }
 
 
