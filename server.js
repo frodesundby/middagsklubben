@@ -1,6 +1,8 @@
 'use strict'
 
 const webpack = require('webpack');
+const express = require('express');
+
 
 const app = require('./api')
 const port = require('./api/config/config').port
@@ -21,9 +23,7 @@ const serverOptions = {
 app.use(require('webpack-dev-middleware')(compiler, serverOptions));
 app.use(require('webpack-hot-middleware')(compiler));
 
-app.get('*', (req, res) => {
-    res.sendFile(path.join(__dirname, './dist/index.html'));
-});
+app.use(express.static(__dirname + "/frontend/dist"))
 
 app.listen(port, () => {
     console.info('----\n==> ✅   Up and running @ %s', port)
