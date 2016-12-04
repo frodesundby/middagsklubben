@@ -3,7 +3,7 @@ module.exports = (app) => {
 
     const restaurants = require('../controllers/restaurants')
     const events = require('../controllers/events')
-    //const schedulers = require('../controllers/scedulers')
+    const schedules = require('../controllers/schedules')
     //const users = require('../controllers/users')
 
     // Restaurants
@@ -31,4 +31,18 @@ module.exports = (app) => {
     app.put(api_root + '/events/:event/ratings/:rating', events.updateRating())
     app.post(api_root + '/events/:event/ratings/:rating', events.createRating())
     app.delete(api_root +'/events/:event/ratings/:rating', events.deleteRating())
+
+    // Schedules
+    app.get(api_root +'/schedules', schedules.getSchedules())
+    app.get(api_root + '/schedules/:schedule', schedules.getSchedule())
+    app.put(api_root + '/schedules/:schedule', schedules.updateSchedule())
+    app.post(api_root + '/schedules/:schedule', schedules.createSchedule())
+    app.delete(api_root +'/schedules/:schedule', schedules.deleteSchedule())
+
+    app.get(api_root +'/schedules/:schedule/participants', schedules.getParticipants())
+    app.get(api_root + '/schedules/:schedule/participants/:participant', schedules.getParticipant())
+    app.put(api_root + '/schedules/:schedule/participants/:participant', schedules.updateParticipant())
+    app.post(api_root + '/schedules/:schedule/participants/:participant', schedules.createParticipant())
+    app.delete(api_root +'/schedules/:schedule/participants/:participant', schedules.deleteParticipant())
+    
 }
