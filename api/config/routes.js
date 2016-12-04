@@ -4,7 +4,7 @@ module.exports = (app) => {
     const restaurants = require('../controllers/restaurants')
     const events = require('../controllers/events')
     const schedules = require('../controllers/schedules')
-    //const users = require('../controllers/users')
+    const users = require('../controllers/users')
 
     // Restaurants
     app.get(api_root +'/restaurants', restaurants.getRestaurants())
@@ -44,5 +44,11 @@ module.exports = (app) => {
     app.put(api_root + '/schedules/:schedule/participants/:participant', schedules.updateParticipant())
     app.post(api_root + '/schedules/:schedule/participants/:participant', schedules.createParticipant())
     app.delete(api_root +'/schedules/:schedule/participants/:participant', schedules.deleteParticipant())
-    
+
+    // Users
+    app.get(api_root +'/users', users.getUsers())
+    app.get(api_root + '/users/:user', users.getUser())
+    app.put(api_root + '/users/:user', users.updateUser())
+    app.post(api_root + '/users/:user', users.createUser())
+    app.delete(api_root +'/users/:user', users.deleteUser())
 }
