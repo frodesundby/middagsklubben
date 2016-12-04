@@ -15,22 +15,22 @@ module.exports = (app) => {
 
     // Events
     app.get(api_root +'/events', events.getEvents())
-    app.get(api_root + '/events/:event', events.getEvent())
-    app.put(api_root + '/events/:event', events.updateEvent())
-    app.post(api_root + '/events/:event', events.createEvent())
-    app.delete(api_root +'/events/:event', events.deleteEvent())
+    app.post(api_root + '/events', events.createEvent())
+    app.get(api_root + '/events/:id', events.getEvent())
+    app.put(api_root + '/events/:id', events.updateEvent())
+    app.delete(api_root +'/events/:id', events.deleteEvent())
 
-    app.get(api_root +'/events/:event/comments', events.getComments())
-    app.get(api_root + '/events/:event/comments/:comment', events.getComment())
-    app.put(api_root + '/events/:event/comments/:comment', events.updateComment())
-    app.post(api_root + '/events/:event/comments/:comment', events.createComment())
-    app.delete(api_root +'/events/:event/comments/:comment', events.deleteComment())
+    app.get(api_root +'/events/:id/comments', events.getComments())
+    app.post(api_root + '/events/:id/comments', events.createComment())
+    app.get(api_root + '/events/:id/comments/:id', events.getComment())
+    app.put(api_root + '/events/:id/comments/:id', events.updateComment())
+    app.delete(api_root +'/events/:id/comments/:id', events.deleteComment())
 
-    app.get(api_root +'/events/:event/ratings', events.getRatings())
-    app.get(api_root + '/events/:event/ratings/:rating', events.getRating())
-    app.put(api_root + '/events/:event/ratings/:rating', events.updateRating())
-    app.post(api_root + '/events/:event/ratings/:rating', events.createRating())
-    app.delete(api_root +'/events/:event/ratings/:rating', events.deleteRating())
+    app.get(api_root +'/events/:id/ratings', events.getRatings())
+    app.post(api_root + '/events/:id/ratings', events.createRating())
+    app.get(api_root + '/events/:id/ratings/:id', events.getRating())
+    app.put(api_root + '/events/:id/ratings/:id', events.updateRating())
+    app.delete(api_root +'/events/:id/ratings/:id', events.deleteRating())
 
     // Schedules
     app.get(api_root +'/schedules', schedules.getSchedules())

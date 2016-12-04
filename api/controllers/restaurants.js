@@ -1,16 +1,14 @@
-const RestaurantMongoSchema = require('../models/restaurantMongoSchema')
+const schemas = require('../models/mongoSchemas')
+const common = require('./common_methods')
 const RestaurantDefinition = require('../models/restaurantDefinition')
-
-
+const RestaurantValidator = require('../models/restaurantValidator')
+const RestaurantMongoSchema = schemas.Restaurant
 
 exports.getRestaurants = () => {
-
     return (req, res) => {
-        RestaurantMongoSchema.find(createMongoQueryFromRequest(req.query), (err, restaurants) => {
+        RestaurantMongoSchema.find(common.createMongoQueryFromRequest(req.query, RestaurantDefinition), (err, restaurants) => {
             if (err) return res.status(400).send(err)
-
             res.send(restaurants)
-
         })
     }
 }
@@ -20,7 +18,6 @@ exports.getRestaurant = () => {
         RestaurantMongoSchema.findOne({_id: req.params.id}, (err, restaurant) => {
             if (err) return res.status(400).send("Unable to find restaurant with id " + req.params.id)
             res.json(restaurant)
-
         })
     }
 
@@ -28,7 +25,7 @@ exports.getRestaurant = () => {
 
 exports.updateRestaurant = () => {
     return (req, res) => {
-        const validation = schemaValidateRequest(req.body)
+        const validation = common.schemaValidateRequest(req.body, RestaurantValidator)
         if (validation.errors.length > 0) {
             return res.status(400).send('JSON schema validation failed with the following errors: ' + validation.errors)
         }
@@ -47,7 +44,7 @@ exports.updateRestaurant = () => {
 
 exports.createRestaurant = () => {
     return (req, res) => {
-        const validation = schemaValidateRequest(req.body)
+        const validation = common.schemaValidateRequest(req.body, RestaurantValidator)
         if (validation.errors.length > 0) {
             return res.status(400).send('JSON schema validation failed with the following errors: ' + validation.errors)
         }
@@ -71,29 +68,4 @@ exports.deleteRestaurant = () => {
 
         })
     }
-}
-
-
-const schemaValidateRequest = (request) => {
-    const validate = require('jsonschema').validate
-    const restaurantJsonSchema = require('../models/restaurantValidator')
-    return validate(request, restaurantJsonSchema)
-}
-
-var createMongoQueryFromRequest = function (request) {
-    var query = {}
-
-    for (var queryParam in request) {
-        if (queryParam in RestaurantDefinition) {
-            if (RestaurantDefinition[queryParam].type === Number) {
-                query[queryParam] = request[queryParam]
-            } else {
-                query[queryParam] = new RegExp(request[queryParam], 'i')
-            }
-        } else {
-            continue
-        }
-    }
-
-    return query
 }

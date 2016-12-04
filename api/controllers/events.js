@@ -1,12 +1,26 @@
-//var Server = require('../models/restaurants')
+const schemas = require('../models/mongoSchemas')
+const common = require('./common_methods')
+const EventDefinition = require('../models/eventDefinition')
+const EventMongoSchema = schemas.Event
 
-// Events
+
 exports.getEvents = () => {
-    return (req, res) => res.send("get events")
+    return (req, res) => {
+        EventMongoSchema.find(common.createMongoQueryFromRequest(req.query, EventDefinition), (err, events) => {
+            if (err) return res.status(400).send(err)
+            res.send(events)
+        })
+    }
 }
 
 exports.getEvent = () => {
-    return (req, res) => res.send("get event: " + req.params.event)
+    return (req, res) => {
+        EventMongoSchema.findOne({_id: req.params.id}, (err, event) => {
+            if (err) return res.status(400).send("Unable to find event with id " + req.params.id)
+            res.json(event)
+        })
+    }
+
 }
 
 exports.updateEvent = () => {
